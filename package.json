@@ -4,6 +4,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@common-module/server": "^0.0.1",
     "@gaiaengine/2d": "^0.0.5"
   },
   "devDependencies": {
