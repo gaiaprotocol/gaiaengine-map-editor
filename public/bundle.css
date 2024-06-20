@@ -1384,10 +1384,15 @@ section.tileset {
   display: flex;
   flex-direction: column;
 }
+section.tileset > .tabs {
+  flex-shrink: 0;
+}
 section.tileset > main {
   flex-grow: 1;
+  overflow: hidden;
 }
 section.tileset > footer {
+  flex-shrink: 0;
   height: 49px;
   border-top: 1px solid var(--line-color);
 }
@@ -1396,13 +1401,16 @@ section.tilemap {
   flex-direction: column;
 }
 section.tilemap > header {
+  flex-shrink: 0;
   height: 49px;
   border-bottom: 1px solid var(--line-color);
 }
 section.tilemap > main {
   flex-grow: 1;
+  overflow: hidden;
 }
 section.tilemap > footer {
+  flex-shrink: 0;
   height: 49px;
   border-top: 1px solid var(--line-color);
 }

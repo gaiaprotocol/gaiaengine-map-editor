@@ -2,12 +2,18 @@ section.tileset {
   display       : flex;
   flex-direction: column;
 
+  >.tabs {
+    flex-shrink: 0;
+  }
+
   >main {
     flex-grow: 1;
+    overflow : hidden;
   }
 
   >footer {
-    height    : 49px;
-    border-top: 1px solid var(--line-color);
+    flex-shrink: 0;
+    height     : 49px;
+    border-top : 1px solid var(--line-color);
   }
 }

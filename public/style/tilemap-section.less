@@ -3,16 +3,19 @@ section.tilemap {
   flex-direction: column;
 
   >header {
+    flex-shrink  : 0;
     height       : 49px;
     border-bottom: 1px solid var(--line-color);
   }
 
   >main {
     flex-grow: 1;
+    overflow : hidden;
   }
 
   >footer {
-    height    : 49px;
-    border-top: 1px solid var(--line-color);
+    flex-shrink: 0;
+    height     : 49px;
+    border-top : 1px solid var(--line-color);
   }
 }
