@@ -1369,4 +1369,41 @@ button.component.disabled {
   max-width: 100%;
   border-radius: 8px;
 }
+#layout {
+  display: flex;
+  height: 100%;
+}
+#layout > section.tileset {
+  width: 340px;
+  border-right: 1px solid var(--line-color);
+}
+#layout > section.tilemap {
+  flex-grow: 1;
+}
+section.tileset {
+  display: flex;
+  flex-direction: column;
+}
+section.tileset > main {
+  flex-grow: 1;
+}
+section.tileset > footer {
+  height: 49px;
+  border-top: 1px solid var(--line-color);
+}
+section.tilemap {
+  display: flex;
+  flex-direction: column;
+}
+section.tilemap > header {
+  height: 49px;
+  border-bottom: 1px solid var(--line-color);
+}
+section.tilemap > main {
+  flex-grow: 1;
+}
+section.tilemap > footer {
+  height: 49px;
+  border-top: 1px solid var(--line-color);
+}
 

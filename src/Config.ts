@@ -1,9 +1,7 @@
 import { WebServerOptions } from "@common-module/server";
 
 export default interface Config extends WebServerOptions {
-  tilesets: {
-    imagePath: string;
-    jsonPath: string;
-  }[];
+  projectId: string;
+  tilesetImages: { [key: string]: string };
   tilemapJsonPath: string;
 }

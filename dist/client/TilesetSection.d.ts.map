@@ -1,0 +1,1 @@
+{"version":3,"file":"TilesetSection.d.ts","sourceRoot":"","sources":["../../src/client/TilesetSection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAY,MAAM,oBAAoB,CAAC;AAEvD,MAAM,CAAC,OAAO,OAAO,cAAe,SAAQ,OAAO;IACjD,OAAO,CAAC,IAAI,CAAO;gBAEP,SAAS,EAAE,MAAM,EAAE,QAAQ,EAAE;QAAE,CAAC,GAAG,EAAE,MAAM,GAAG,MAAM,CAAA;KAAE;CAkBnE"}

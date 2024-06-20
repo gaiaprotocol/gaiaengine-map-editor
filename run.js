@@ -1,7 +1,10 @@
 import run from "./dist/run.js";
 run({
   webServerPort: 8080,
-  tilesetImagePath: "tileset.png",
-  tilesetJsonPath: "tileset.json",
-  tilemapJsonPath: "tilemap.json",
+  projectId: "test",
+  tilesetImages: {
+    grass: "assets/grass.png",
+    water: "assets/water.png"
+  },
+  tilemapJsonPath: "assets/tilemap.json",
 });
