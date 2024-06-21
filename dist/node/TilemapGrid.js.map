@@ -1,0 +1,1 @@
+{"version":3,"file":"TilemapGrid.js","sourceRoot":"","sources":["../../src/node/TilemapGrid.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,gBAAgB,CAAC;AAEtC,MAAM,CAAC,OAAO,OAAO,WAAY,SAAQ,IAAI;IAC3C,YAAY,CAAS,EAAE,CAAS;QAC9B,KAAK,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC;IACd,CAAC;CACF"}

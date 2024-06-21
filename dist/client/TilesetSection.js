@@ -1,5 +1,6 @@
 import { DomNode, el, Input, Store, Tabs } from "@common-module/app";
 import { Image, Screen } from "@gaiaengine/2d";
+import FixedGrid from "../node/FixedGrid.js";
 export default class TilesetSection extends DomNode {
     projectId;
     tilesets;
@@ -13,10 +14,11 @@ export default class TilesetSection extends DomNode {
     xInput;
     yInput;
     zoomInput;
+    grid;
     getTilesetTransform(key) {
         return this.tilesetTransforms[key] ?? { x: 0, y: 0, zoom: 1 };
     }
-    constructor(projectId, tilesets) {
+    constructor(projectId, tileSize, tilesets) {
         super("section.tileset");
         this.projectId = projectId;
         this.tilesets = tilesets;
@@ -30,9 +32,13 @@ export default class TilesetSection extends DomNode {
             id: key,
             label: key,
         }))), el("main", this.screen = new Screen(0, 0)), el("footer", this.xInput = new Input({ label: "X" }), this.yInput = new Input({ label: "Y" }), this.zoomInput = new Input({ label: "Zoom" })));
+        this.screen.backgroundColor = 0xbfbfbf;
         this.tabs.on("select", (id) => {
             this.screen.root.empty();
-            this.screen.root.append(new Image(0, 0, `api/load-assets/${tilesets[id]}`));
+            const image = new Image(0, 0, `api/load-assets/${tilesets[id]}`, () => {
+                this.screen.root.append(this.grid = new FixedGrid(0, 0, tileSize, image.width, image.height));
+            });
+            this.screen.root.append(image);
             const transform = this.getTilesetTransform(id);
             this.xInput.value = transform.x.toString();
             this.yInput.value = transform.y.toString();
@@ -95,6 +101,10 @@ export default class TilesetSection extends DomNode {
     resizeScreen() {
         const rect = this.screen.parent.rect;
         this.screen.resize(rect.width, rect.height);
+    }
+    set tileSize(tileSize) {
+        if (this.grid)
+            this.grid.tileSize = tileSize;
     }
 }
 //# sourceMappingURL=TilesetSection.js.map

@@ -12,10 +12,12 @@ export default class TilesetSection extends DomNode {
     private xInput;
     private yInput;
     private zoomInput;
+    private grid;
     private getTilesetTransform;
-    constructor(projectId: string, tilesets: {
+    constructor(projectId: string, tileSize: number, tilesets: {
         [key: string]: string;
     });
     private resizeScreen;
+    set tileSize(tileSize: number);
 }
 //# sourceMappingURL=TilesetSection.d.ts.map

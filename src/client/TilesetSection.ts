@@ -1,5 +1,6 @@
 import { DomNode, el, Input, Store, Tabs } from "@common-module/app";
 import { Image, Screen } from "@gaiaengine/2d";
+import FixedGrid from "../node/FixedGrid.js";
 
 interface Transform {
   x: number;
@@ -21,12 +22,15 @@ export default class TilesetSection extends DomNode {
   private yInput: Input;
   private zoomInput: Input;
 
+  private grid: FixedGrid | undefined;
+
   private getTilesetTransform(key: string) {
     return this.tilesetTransforms[key] ?? { x: 0, y: 0, zoom: 1 };
   }
 
   constructor(
     private projectId: string,
+    tileSize: number,
     private tilesets: { [key: string]: string },
   ) {
     super("section.tileset");
@@ -53,11 +57,16 @@ export default class TilesetSection extends DomNode {
       ),
     );
 
+    this.screen.backgroundColor = 0xbfbfbf;
+
     this.tabs.on("select", (id) => {
       this.screen.root.empty();
-      this.screen.root.append(
-        new Image(0, 0, `api/load-assets/${tilesets[id]}`),
-      );
+      const image = new Image(0, 0, `api/load-assets/${tilesets[id]}`, () => {
+        this.screen.root.append(
+          this.grid = new FixedGrid(0, 0, tileSize, image.width, image.height),
+        );
+      });
+      this.screen.root.append(image);
       const transform = this.getTilesetTransform(id);
       this.xInput.value = transform.x.toString();
       this.yInput.value = transform.y.toString();
@@ -127,5 +136,9 @@ export default class TilesetSection extends DomNode {
   private resizeScreen() {
     const rect = this.screen.parent!.rect;
     this.screen.resize(rect.width, rect.height);
+  }
+
+  public set tileSize(tileSize: number) {
+    if (this.grid) this.grid.tileSize = tileSize;
   }
 }

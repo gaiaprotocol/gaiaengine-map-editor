@@ -1,5 +1,6 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
-import { Image, Screen, TilemapData } from "@gaiaengine/2d";
+import { Screen, TilemapData } from "@gaiaengine/2d";
+import InfiniteGrid from "../node/InfiniteGrid.js";
 import EditorService from "./EditorService.js";
 
 export default class TilemapSection extends DomNode {
@@ -18,8 +19,11 @@ export default class TilemapSection extends DomNode {
   private yInput: Input;
   private zoomInput: Input;
 
+  private grid: InfiniteGrid;
+
   constructor(private projectId: string, private tilemapData: TilemapData) {
     super("section.tilemap");
+    this.addAllowedEvents("tileSizeChange");
 
     this.transformStore = new Store(`tilemap-transform-${this.projectId}`);
     this.x = this.transformStore.get("x") ?? 0;
@@ -31,7 +35,7 @@ export default class TilemapSection extends DomNode {
         "header",
         this.tileSizeInput = new Input({
           label: "Tile Size",
-          value: "32",
+          value: tilemapData.tileSize.toString(),
         }),
       ),
       el(
@@ -39,7 +43,7 @@ export default class TilemapSection extends DomNode {
         this.screen = new Screen(
           0,
           0,
-          new Image(0, 0, `api/load-assets/assets/grass.png`),
+          this.grid = new InfiniteGrid(0, 0, tilemapData.tileSize),
         ),
       ),
       el(
@@ -53,11 +57,16 @@ export default class TilemapSection extends DomNode {
       ),
     );
 
-    this.tileSizeInput.on("change", async () => {
+    this.screen.backgroundColor = 0xbfbfbf;
+
+    this.tileSizeInput.on("change", () => {
       const tileSize = parseInt(this.tileSizeInput.value);
       tilemapData.tileSize = tileSize;
       this.tileSizeInput.value = tileSize.toString();
-      await EditorService.saveTilemap(this.tilemapData);
+      EditorService.saveTilemap(this.tilemapData);
+
+      this.grid.tileSize = tileSize;
+      this.emit("tileSizeChange", tileSize);
     });
 
     this.screen.camera.setPosition(-this.x, -this.y);

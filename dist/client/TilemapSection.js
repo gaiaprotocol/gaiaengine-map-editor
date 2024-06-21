@@ -1,5 +1,6 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
-import { Image, Screen } from "@gaiaengine/2d";
+import { Screen } from "@gaiaengine/2d";
+import InfiniteGrid from "../node/InfiniteGrid.js";
 import EditorService from "./EditorService.js";
 export default class TilemapSection extends DomNode {
     projectId;
@@ -16,26 +17,31 @@ export default class TilemapSection extends DomNode {
     xInput;
     yInput;
     zoomInput;
+    grid;
     constructor(projectId, tilemapData) {
         super("section.tilemap");
         this.projectId = projectId;
         this.tilemapData = tilemapData;
+        this.addAllowedEvents("tileSizeChange");
         this.transformStore = new Store(`tilemap-transform-${this.projectId}`);
         this.x = this.transformStore.get("x") ?? 0;
         this.y = this.transformStore.get("y") ?? 0;
         this.zoom = this.transformStore.get("zoom") ?? 1;
         this.append(el("header", this.tileSizeInput = new Input({
             label: "Tile Size",
-            value: "32",
-        })), el("main", this.screen = new Screen(0, 0, new Image(0, 0, `api/load-assets/assets/grass.png`))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
+            value: tilemapData.tileSize.toString(),
+        })), el("main", this.screen = new Screen(0, 0, this.grid = new InfiniteGrid(0, 0, tilemapData.tileSize))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
             label: "Zoom",
             value: this.zoom.toString(),
         })));
-        this.tileSizeInput.on("change", async () => {
+        this.screen.backgroundColor = 0xbfbfbf;
+        this.tileSizeInput.on("change", () => {
             const tileSize = parseInt(this.tileSizeInput.value);
             tilemapData.tileSize = tileSize;
             this.tileSizeInput.value = tileSize.toString();
-            await EditorService.saveTilemap(this.tilemapData);
+            EditorService.saveTilemap(this.tilemapData);
+            this.grid.tileSize = tileSize;
+            this.emit("tileSizeChange", tileSize);
         });
         this.screen.camera.setPosition(-this.x, -this.y);
         this.screen.root.scale = this.zoom;

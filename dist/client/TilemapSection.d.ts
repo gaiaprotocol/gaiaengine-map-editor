@@ -15,6 +15,7 @@ export default class TilemapSection extends DomNode {
     private xInput;
     private yInput;
     private zoomInput;
+    private grid;
     constructor(projectId: string, tilemapData: TilemapData);
     private resizeScreen;
 }
