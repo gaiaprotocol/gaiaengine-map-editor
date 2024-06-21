@@ -793,10 +793,21 @@ eval("\n\nvar isArrayish = __webpack_require__(/*! is-arrayish */ \"./node_modul
 /*!***********************!*\
   !*** ./src/client.ts ***!
   \***********************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _common_module_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @common-module/app */ \"../app-module/lib/index.js\");\n/* harmony import */ var _client_TilemapSection_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./client/TilemapSection.js */ \"./src/client/TilemapSection.ts\");\n/* harmony import */ var _client_TilesetSection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./client/TilesetSection.js */ \"./src/client/TilesetSection.ts\");\n\n\n\nconst config = window.config;\nconst tilemapData = await fetch(\"/api/load-assets/assets/tilemap.json\").then((response) => response.json());\n_common_module_app__WEBPACK_IMPORTED_MODULE_0__.BodyNode.append((0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"#layout\", new _client_TilesetSection_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"](config.projectId, config.tilesetImages), new _client_TilemapSection_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"](config.projectId, tilemapData)));\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } }, 1);\n\n//# sourceURL=webpack:///./src/client.ts?");
+
+/***/ }),
+
+/***/ "./src/client/EditorService.ts":
+/*!*************************************!*\
+  !*** ./src/client/EditorService.ts ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _common_module_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @common-module/app */ \"../app-module/lib/index.js\");\n/* harmony import */ var _client_TilemapSection_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./client/TilemapSection.js */ \"./src/client/TilemapSection.ts\");\n/* harmony import */ var _client_TilesetSection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./client/TilesetSection.js */ \"./src/client/TilesetSection.ts\");\n\n\n\nconst config = window.config;\n_common_module_app__WEBPACK_IMPORTED_MODULE_0__.BodyNode.append((0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"#layout\", new _client_TilesetSection_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"](config.projectId, config.tilesetImages), new _client_TilemapSection_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"](config.projectId)));\n\n\n//# sourceURL=webpack:///./src/client.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nclass EditorService {\n    async saveTilemap(tilemap) {\n        const response = await fetch(\"/api/save-tilemap\", {\n            method: \"POST\",\n            headers: {\n                \"Content-Type\": \"application/json\",\n            },\n            body: JSON.stringify(tilemap),\n        });\n        if (!response.ok) {\n            throw new Error(`Failed to save tilemap: ${response.statusText}`);\n        }\n    }\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new EditorService());\n\n\n//# sourceURL=webpack:///./src/client/EditorService.ts?");
 
 /***/ }),
 
@@ -807,7 +818,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _com
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ TilemapSection)\n/* harmony export */ });\n/* harmony import */ var _common_module_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @common-module/app */ \"../app-module/lib/index.js\");\n/* harmony import */ var _gaiaengine_2d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @gaiaengine/2d */ \"../gaiaengine-2d/lib/index.js\");\n\n\nclass TilemapSection extends _common_module_app__WEBPACK_IMPORTED_MODULE_0__.DomNode {\n    projectId;\n    transformStore;\n    x = 0;\n    y = 0;\n    zoom = 1;\n    dragging = false;\n    dragX = 0;\n    dragY = 0;\n    screen;\n    xInput;\n    yInput;\n    zoomInput;\n    constructor(projectId) {\n        super(\"section.tilemap\");\n        this.projectId = projectId;\n        this.transformStore = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Store(`tilemap-transform-${this.projectId}`);\n        this.x = this.transformStore.get(\"x\") ?? 0;\n        this.y = this.transformStore.get(\"y\") ?? 0;\n        this.zoom = this.transformStore.get(\"zoom\") ?? 1;\n        this.append((0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"header\"), (0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"main\", this.screen = new _gaiaengine_2d__WEBPACK_IMPORTED_MODULE_1__.Screen(0, 0, new _gaiaengine_2d__WEBPACK_IMPORTED_MODULE_1__.Image(0, 0, `api/load-assets/assets/grass.png`))), (0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"footer\", this.xInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({ label: \"X\", value: this.x.toString() }), this.yInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({ label: \"Y\", value: this.y.toString() }), this.zoomInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({\n            label: \"Zoom\",\n            value: this.zoom.toString(),\n        })));\n        this.screen.camera.setPosition(-this.x, -this.y);\n        this.screen.root.scale = this.zoom;\n        this.screen.onDom(\"mousedown\", (event) => {\n            this.dragging = true;\n            this.dragX = event.clientX;\n            this.dragY = event.clientY;\n        });\n        this.screen.onDom(\"mousemove\", (event) => {\n            if (this.dragging) {\n                this.x += event.clientX - this.dragX;\n                this.y += event.clientY - this.dragY;\n                this.dragX = event.clientX;\n                this.dragY = event.clientY;\n                this.xInput.value = this.x.toString();\n                this.yInput.value = this.y.toString();\n                this.screen.camera.setPosition(-this.x, -this.y);\n                this.transformStore.set(\"x\", this.x);\n                this.transformStore.set(\"y\", this.y);\n            }\n        });\n        this.screen.onDom(\"mouseup\", () => this.dragging = false);\n        this.screen.onDom(\"wheel\", (event) => {\n            event.preventDefault();\n            this.zoom += event.deltaY / 100;\n            if (this.zoom < 0.1)\n                this.zoom = 0.1;\n            if (this.zoom > 10)\n                this.zoom = 10;\n            this.screen.root.scale = this.zoom;\n            this.zoomInput.value = this.zoom.toString();\n            this.transformStore.set(\"zoom\", this.zoom);\n        });\n        this.xInput.on(\"change\", () => {\n            this.x = parseFloat(this.xInput.value);\n            this.screen.camera.setPosition(-this.x, -this.y);\n            this.transformStore.set(\"x\", this.x);\n        });\n        this.yInput.on(\"change\", () => {\n            this.y = parseFloat(this.yInput.value);\n            this.screen.camera.setPosition(-this.x, -this.y);\n            this.transformStore.set(\"y\", this.y);\n        });\n        this.zoomInput.on(\"change\", () => {\n            this.zoom = parseFloat(this.zoomInput.value);\n            this.screen.root.scale = this.zoom;\n            this.transformStore.set(\"zoom\", this.zoom);\n        });\n        this.on(\"visible\", () => this.resizeScreen());\n        this.onWindow(\"resize\", () => this.resizeScreen());\n    }\n    resizeScreen() {\n        const rect = this.screen.parent.rect;\n        this.screen.resize(rect.width, rect.height);\n    }\n}\n\n\n//# sourceURL=webpack:///./src/client/TilemapSection.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ TilemapSection)\n/* harmony export */ });\n/* harmony import */ var _common_module_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @common-module/app */ \"../app-module/lib/index.js\");\n/* harmony import */ var _gaiaengine_2d__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @gaiaengine/2d */ \"../gaiaengine-2d/lib/index.js\");\n/* harmony import */ var _EditorService_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EditorService.js */ \"./src/client/EditorService.ts\");\n\n\n\nclass TilemapSection extends _common_module_app__WEBPACK_IMPORTED_MODULE_0__.DomNode {\n    projectId;\n    tilemapData;\n    transformStore;\n    x = 0;\n    y = 0;\n    zoom = 1;\n    dragging = false;\n    dragX = 0;\n    dragY = 0;\n    tileSizeInput;\n    screen;\n    xInput;\n    yInput;\n    zoomInput;\n    constructor(projectId, tilemapData) {\n        super(\"section.tilemap\");\n        this.projectId = projectId;\n        this.tilemapData = tilemapData;\n        this.transformStore = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Store(`tilemap-transform-${this.projectId}`);\n        this.x = this.transformStore.get(\"x\") ?? 0;\n        this.y = this.transformStore.get(\"y\") ?? 0;\n        this.zoom = this.transformStore.get(\"zoom\") ?? 1;\n        this.append((0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"header\", this.tileSizeInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({\n            label: \"Tile Size\",\n            value: \"32\",\n        })), (0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"main\", this.screen = new _gaiaengine_2d__WEBPACK_IMPORTED_MODULE_1__.Screen(0, 0, new _gaiaengine_2d__WEBPACK_IMPORTED_MODULE_1__.Image(0, 0, `api/load-assets/assets/grass.png`))), (0,_common_module_app__WEBPACK_IMPORTED_MODULE_0__.el)(\"footer\", this.xInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({ label: \"X\", value: this.x.toString() }), this.yInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({ label: \"Y\", value: this.y.toString() }), this.zoomInput = new _common_module_app__WEBPACK_IMPORTED_MODULE_0__.Input({\n            label: \"Zoom\",\n            value: this.zoom.toString(),\n        })));\n        this.tileSizeInput.on(\"change\", async () => {\n            const tileSize = parseInt(this.tileSizeInput.value);\n            tilemapData.tileSize = tileSize;\n            this.tileSizeInput.value = tileSize.toString();\n            await _EditorService_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"].saveTilemap(this.tilemapData);\n        });\n        this.screen.camera.setPosition(-this.x, -this.y);\n        this.screen.root.scale = this.zoom;\n        this.screen.onDom(\"mousedown\", (event) => {\n            this.dragging = true;\n            this.dragX = event.clientX;\n            this.dragY = event.clientY;\n        });\n        this.screen.onDom(\"mousemove\", (event) => {\n            if (this.dragging) {\n                this.x += event.clientX - this.dragX;\n                this.y += event.clientY - this.dragY;\n                this.dragX = event.clientX;\n                this.dragY = event.clientY;\n                this.xInput.value = this.x.toString();\n                this.yInput.value = this.y.toString();\n                this.screen.camera.setPosition(-this.x, -this.y);\n                this.transformStore.set(\"x\", this.x);\n                this.transformStore.set(\"y\", this.y);\n            }\n        });\n        this.screen.onDom(\"mouseup\", () => this.dragging = false);\n        this.screen.onDom(\"wheel\", (event) => {\n            event.preventDefault();\n            this.zoom += event.deltaY / 100;\n            if (this.zoom < 0.1)\n                this.zoom = 0.1;\n            if (this.zoom > 10)\n                this.zoom = 10;\n            this.screen.root.scale = this.zoom;\n            this.zoomInput.value = this.zoom.toString();\n            this.transformStore.set(\"zoom\", this.zoom);\n        });\n        this.xInput.on(\"change\", () => {\n            this.x = parseFloat(this.xInput.value);\n            this.screen.camera.setPosition(-this.x, -this.y);\n            this.transformStore.set(\"x\", this.x);\n        });\n        this.yInput.on(\"change\", () => {\n            this.y = parseFloat(this.yInput.value);\n            this.screen.camera.setPosition(-this.x, -this.y);\n            this.transformStore.set(\"y\", this.y);\n        });\n        this.zoomInput.on(\"change\", () => {\n            this.zoom = parseFloat(this.zoomInput.value);\n            this.screen.root.scale = this.zoom;\n            this.transformStore.set(\"zoom\", this.zoom);\n        });\n        this.on(\"visible\", () => this.resizeScreen());\n        this.onWindow(\"resize\", () => this.resizeScreen());\n    }\n    resizeScreen() {\n        const rect = this.screen.parent.rect;\n        this.screen.resize(rect.width, rect.height);\n    }\n}\n\n\n//# sourceURL=webpack:///./src/client/TilemapSection.ts?");
 
 /***/ }),
 
@@ -7936,6 +7947,75 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	__webpack_require__.m = __webpack_modules__;
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/create fake namespace object */
 /******/ 	(() => {
 /******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);

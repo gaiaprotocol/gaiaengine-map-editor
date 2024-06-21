@@ -1,5 +1,6 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
-import { Image, Screen } from "@gaiaengine/2d";
+import { Image, Screen, TilemapData } from "@gaiaengine/2d";
+import EditorService from "./EditorService.js";
 
 export default class TilemapSection extends DomNode {
   private transformStore: Store;
@@ -11,20 +12,28 @@ export default class TilemapSection extends DomNode {
   private dragX = 0;
   private dragY = 0;
 
+  private tileSizeInput: Input;
   private screen: Screen;
   private xInput: Input;
   private yInput: Input;
   private zoomInput: Input;
 
-  constructor(private projectId: string) {
+  constructor(private projectId: string, private tilemapData: TilemapData) {
     super("section.tilemap");
+
     this.transformStore = new Store(`tilemap-transform-${this.projectId}`);
     this.x = this.transformStore.get("x") ?? 0;
     this.y = this.transformStore.get("y") ?? 0;
     this.zoom = this.transformStore.get("zoom") ?? 1;
 
     this.append(
-      el("header"),
+      el(
+        "header",
+        this.tileSizeInput = new Input({
+          label: "Tile Size",
+          value: "32",
+        }),
+      ),
       el(
         "main",
         this.screen = new Screen(
@@ -43,6 +52,13 @@ export default class TilemapSection extends DomNode {
         }),
       ),
     );
+
+    this.tileSizeInput.on("change", async () => {
+      const tileSize = parseInt(this.tileSizeInput.value);
+      tilemapData.tileSize = tileSize;
+      this.tileSizeInput.value = tileSize.toString();
+      await EditorService.saveTilemap(this.tilemapData);
+    });
 
     this.screen.camera.setPosition(-this.x, -this.y);
     this.screen.root.scale = this.zoom;

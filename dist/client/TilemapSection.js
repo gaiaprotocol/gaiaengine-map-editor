@@ -1,7 +1,9 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
 import { Image, Screen } from "@gaiaengine/2d";
+import EditorService from "./EditorService.js";
 export default class TilemapSection extends DomNode {
     projectId;
+    tilemapData;
     transformStore;
     x = 0;
     y = 0;
@@ -9,21 +11,32 @@ export default class TilemapSection extends DomNode {
     dragging = false;
     dragX = 0;
     dragY = 0;
+    tileSizeInput;
     screen;
     xInput;
     yInput;
     zoomInput;
-    constructor(projectId) {
+    constructor(projectId, tilemapData) {
         super("section.tilemap");
         this.projectId = projectId;
+        this.tilemapData = tilemapData;
         this.transformStore = new Store(`tilemap-transform-${this.projectId}`);
         this.x = this.transformStore.get("x") ?? 0;
         this.y = this.transformStore.get("y") ?? 0;
         this.zoom = this.transformStore.get("zoom") ?? 1;
-        this.append(el("header"), el("main", this.screen = new Screen(0, 0, new Image(0, 0, `api/load-assets/assets/grass.png`))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
+        this.append(el("header", this.tileSizeInput = new Input({
+            label: "Tile Size",
+            value: "32",
+        })), el("main", this.screen = new Screen(0, 0, new Image(0, 0, `api/load-assets/assets/grass.png`))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
             label: "Zoom",
             value: this.zoom.toString(),
         })));
+        this.tileSizeInput.on("change", async () => {
+            const tileSize = parseInt(this.tileSizeInput.value);
+            tilemapData.tileSize = tileSize;
+            this.tileSizeInput.value = tileSize.toString();
+            await EditorService.saveTilemap(this.tilemapData);
+        });
         this.screen.camera.setPosition(-this.x, -this.y);
         this.screen.root.scale = this.zoom;
         this.screen.onDom("mousedown", (event) => {

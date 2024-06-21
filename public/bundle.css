@@ -1392,12 +1392,12 @@ section.tileset > main {
   overflow: hidden;
 }
 section.tileset > footer {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
   flex-shrink: 0;
   height: 49px;
   border-top: 1px solid var(--line-color);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
   padding: 0 10px;
 }
 section.tileset > footer > .input {
@@ -1416,24 +1416,29 @@ section.tilemap > header {
   height: 49px;
   border-bottom: 1px solid var(--line-color);
 }
+section.tilemap > header,
+section.tilemap > footer {
+  display: flex;
+  gap: 10px;
+  padding: 0 10px;
+}
+section.tilemap > header > .input,
+section.tilemap > footer > .input {
+  flex-direction: row;
+  align-items: center;
+}
+section.tilemap > header > .input > input,
+section.tilemap > footer > .input > input {
+  width: 60px;
+}
 section.tilemap > main {
   flex-grow: 1;
   overflow: hidden;
 }
 section.tilemap > footer {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
   flex-shrink: 0;
   height: 49px;
   border-top: 1px solid var(--line-color);
-  padding: 0 10px;
-}
-section.tilemap > footer > .input {
-  flex-direction: row;
-  align-items: center;
-}
-section.tilemap > footer > .input > input {
-  width: 60px;
+  justify-content: flex-end;
 }
 

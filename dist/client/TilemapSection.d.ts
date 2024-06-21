@@ -1,6 +1,8 @@
 import { DomNode } from "@common-module/app";
+import { TilemapData } from "@gaiaengine/2d";
 export default class TilemapSection extends DomNode {
     private projectId;
+    private tilemapData;
     private transformStore;
     private x;
     private y;
@@ -8,11 +10,12 @@ export default class TilemapSection extends DomNode {
     private dragging;
     private dragX;
     private dragY;
+    private tileSizeInput;
     private screen;
     private xInput;
     private yInput;
     private zoomInput;
-    constructor(projectId: string);
+    constructor(projectId: string, tilemapData: TilemapData);
     private resizeScreen;
 }
 //# sourceMappingURL=TilemapSection.d.ts.map
