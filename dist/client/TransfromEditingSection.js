@@ -1,6 +1,6 @@
 import { DomNode, el, Input, Store, Tabs } from "@common-module/app";
 import { Image, Screen } from "@gaiaengine/2d";
-export default class TilesetSection extends DomNode {
+export default class TransfromEditingSection extends DomNode {
     projectId;
     tilesets;
     transformStore;
@@ -22,7 +22,7 @@ export default class TilesetSection extends DomNode {
         this.tilesets = tilesets;
         this.transformStore = new Store(`tileset-transform-${this.projectId}`);
         for (const key in this.tilesets) {
-            const transform = this.transformStore.get(key);
+            const transform = this.transformStore.get(key, { x: 0, y: 0, zoom: 1 });
             if (transform)
                 this.tilesetTransforms[key] = transform;
         }
@@ -58,7 +58,9 @@ export default class TilesetSection extends DomNode {
                 this.transformStore.set(this.tabs.currentTab, transform);
             }
         });
-        this.screen.onDom("mouseup", () => this.dragging = false);
+        this.screen.onDom("mouseup", () => {
+            this.dragging = false;
+        });
         this.screen.onDom("wheel", (event) => {
             event.preventDefault();
             const transform = this.getTilesetTransform(this.tabs.currentTab);
@@ -97,4 +99,4 @@ export default class TilesetSection extends DomNode {
         this.screen.resize(rect.width, rect.height);
     }
 }
-//# sourceMappingURL=TilesetSection.js.map
+//# sourceMappingURL=TransfromEditingSection.js.map

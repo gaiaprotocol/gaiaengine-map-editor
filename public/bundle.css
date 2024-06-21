@@ -1392,9 +1392,20 @@ section.tileset > main {
   overflow: hidden;
 }
 section.tileset > footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
   flex-shrink: 0;
   height: 49px;
   border-top: 1px solid var(--line-color);
+  padding: 0 10px;
+}
+section.tileset > footer > .input {
+  flex-direction: row;
+  align-items: center;
+}
+section.tileset > footer > .input > input {
+  width: 60px;
 }
 section.tilemap {
   display: flex;
@@ -1410,8 +1421,19 @@ section.tilemap > main {
   overflow: hidden;
 }
 section.tilemap > footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
   flex-shrink: 0;
   height: 49px;
   border-top: 1px solid var(--line-color);
+  padding: 0 10px;
+}
+section.tilemap > footer > .input {
+  flex-direction: row;
+  align-items: center;
+}
+section.tilemap > footer > .input > input {
+  width: 60px;
 }
 

@@ -9,6 +9,6 @@ BodyNode.append(
   el(
     "#layout",
     new TilesetSection(config.projectId, config.tilesetImages),
-    new TilemapSection(),
+    new TilemapSection(config.projectId),
   ),
 );

@@ -1,5 +1,5 @@
 import { DomNode } from "@common-module/app";
-export default class TilesetSection extends DomNode {
+export default abstract class TransfromEditingSection extends DomNode {
     private projectId;
     private tilesets;
     private transformStore;
@@ -18,4 +18,4 @@ export default class TilesetSection extends DomNode {
     });
     private resizeScreen;
 }
-//# sourceMappingURL=TilesetSection.d.ts.map
+//# sourceMappingURL=TransfromEditingSection.d.ts.map
