@@ -11,7 +11,7 @@ export default class InfiniteGrid extends Grid {
     const centerGraphics = new Graphics();
     centerGraphics.rect(-1, -1, 2, 2).fill(0xff0000);
     this.container.addChild(centerGraphics);
-    this.append(new Text(0, 10, "(0, 0)"));
+    this.append(new Text(0, 10, "(0, 0)", { userSelect: "none" }));
   }
 
   private drawLines(): void {
