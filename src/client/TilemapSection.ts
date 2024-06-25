@@ -1,6 +1,7 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
 import { Screen, TilemapData } from "@gaiaengine/2d";
 import InfiniteGrid from "../node/InfiniteGrid.js";
+import TileAreaDisplay from "../node/TileAreaDisplay.js";
 import EditorService from "./EditorService.js";
 
 export default class TilemapSection extends DomNode {
@@ -20,6 +21,7 @@ export default class TilemapSection extends DomNode {
   private zoomInput: Input;
 
   private grid: InfiniteGrid;
+  private hoverTile: TileAreaDisplay | undefined;
 
   constructor(private projectId: string, private tilemapData: TilemapData) {
     super("section.tilemap");
@@ -90,9 +92,11 @@ export default class TilemapSection extends DomNode {
         this.transformStore.set("x", this.x);
         this.transformStore.set("y", this.y);
       }
+      this.touchMoveHandler(event);
     });
 
     this.screen.onDom("mouseup", () => this.dragging = false);
+    this.screen.onDom("touchmove", this.touchMoveHandler);
 
     this.screen.onDom("wheel", (event: WheelEvent) => {
       event.preventDefault();
@@ -125,6 +129,31 @@ export default class TilemapSection extends DomNode {
     this.on("visible", () => this.resizeScreen());
     this.onWindow("resize", () => this.resizeScreen());
   }
+
+  private touchMoveHandler = (e: TouchEvent | MouseEvent) => {
+    const screenRect = this.screen.rect;
+    const rx = ((e instanceof TouchEvent ? e.touches[0].clientX : e.clientX) -
+      screenRect.x - this.screen.width / 2 + this.screen.camera.x) /
+      this.screen.root.scaleX;
+    const ry = ((e instanceof TouchEvent ? e.touches[0].clientY : e.clientY) -
+      screenRect.y - this.screen.height / 2 + this.screen.camera.y) /
+      this.screen.root.scaleY;
+
+    const row = Math.floor(
+      (ry + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize,
+    );
+    const col = Math.floor(
+      (rx + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize,
+    );
+
+    if (
+      this.hoverTile && this.hoverTile.row === row &&
+      this.hoverTile.col === col
+    ) return;
+    this.hoverTile?.delete();
+    this.hoverTile = new TileAreaDisplay(this.tilemapData.tileSize, row, col)
+      .appendTo(this.screen.root);
+  };
 
   private resizeScreen() {
     const rect = this.screen.parent!.rect;

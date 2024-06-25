@@ -16,7 +16,9 @@ export default class TilemapSection extends DomNode {
     private yInput;
     private zoomInput;
     private grid;
+    private hoverTile;
     constructor(projectId: string, tilemapData: TilemapData);
+    private touchMoveHandler;
     private resizeScreen;
 }
 //# sourceMappingURL=TilemapSection.d.ts.map

@@ -28,25 +28,31 @@ export default class InfiniteGrid extends Grid {
     const bottom = this.screen.height / 2 / scale +
       this.screen.camera.y / scale;
 
-    const startX = Math.floor(left / this._tileSize) * this._tileSize;
-    const endX = Math.ceil(right / this._tileSize) * this._tileSize;
-    const startY = Math.floor(top / this._tileSize) * this._tileSize;
-    const endY = Math.ceil(bottom / this._tileSize) * this._tileSize;
+    // Adjust startX and startY to align with tile centers
+    const startX = Math.floor(left / this._tileSize) * this._tileSize +
+      this._tileSize / 2;
+    const endX = Math.ceil(right / this._tileSize) * this._tileSize +
+      this._tileSize / 2;
+    const startY = Math.floor(top / this._tileSize) * this._tileSize +
+      this._tileSize / 2;
+    const endY = Math.ceil(bottom / this._tileSize) * this._tileSize +
+      this._tileSize / 2;
 
     for (let x = startX; x <= endX; x += this._tileSize) {
-      if (x % (this._tileSize * 5) === 0) {
-        this.drawLine(x, startY, x, endY);
-      } else {
-        this.drawDashedLine(x, startY, x, endY);
-      }
+      this.drawDashedLine(
+        x,
+        startY - this._tileSize / 2,
+        x,
+        endY + this._tileSize / 2,
+      );
     }
-
     for (let y = startY; y <= endY; y += this._tileSize) {
-      if (y % (this._tileSize * 5) === 0) {
-        this.drawLine(startX, y, endX, y);
-      } else {
-        this.drawDashedLine(startX, y, endX, y);
-      }
+      this.drawDashedLine(
+        startX - this._tileSize / 2,
+        y,
+        endX + this._tileSize / 2,
+        y,
+      );
     }
   }
 

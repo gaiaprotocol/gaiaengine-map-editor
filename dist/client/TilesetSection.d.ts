@@ -12,7 +12,7 @@ export default class TilesetSection extends DomNode {
     private xInput;
     private yInput;
     private zoomInput;
-    private grid;
+    private tileset;
     private getTilesetTransform;
     constructor(projectId: string, tileSize: number, tilesets: {
         [key: string]: string;
