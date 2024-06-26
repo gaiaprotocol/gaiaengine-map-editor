@@ -34,6 +34,8 @@ export default class TilesetSection extends DomNode {
     private tilesets: { [key: string]: string },
   ) {
     super("section.tileset");
+    this.addAllowedEvents("tileSelected");
+
     this.transformStore = new Store(`tileset-transform-${this.projectId}`);
     for (const key in this.tilesets) {
       const transform = this.transformStore.get<Transform>(key);
@@ -60,7 +62,11 @@ export default class TilesetSection extends DomNode {
     this.screen.backgroundColor = 0xbfbfbf;
 
     this.tabs.on("select", (id) => {
-      this.tileset = new Tileset(`api/load-assets/${tilesets[id]}`, tileSize);
+      this.tileset = new Tileset(
+        `api/load-assets/${tilesets[id]}`,
+        tileSize,
+        (row, col) => this.emit("tileSelected", id, row, col),
+      );
       this.screen.root.empty().append(this.tileset);
       const transform = this.getTilesetTransform(id);
       this.xInput.value = transform.x.toString();

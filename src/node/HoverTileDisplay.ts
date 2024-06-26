@@ -1,12 +1,18 @@
 import { Node } from "@gaiaengine/2d";
-import { Graphics } from "pixi.js";
+import { Graphics, Sprite, Texture } from "pixi.js";
 
-export default class TileAreaDisplay extends Node {
+export default class HoverTileDisplay extends Node {
   private _row = 0;
   private _col = 0;
 
-  constructor(private tileSize: number, row: number, col: number) {
+  constructor(
+    private tileSize: number,
+    row: number,
+    col: number,
+    tileTexture?: Texture,
+  ) {
     super(0, 0);
+
     this.container.addChild(
       new Graphics().rect(0, 0, this.tileSize, this.tileSize).stroke({
         color: 0xFF0000,
@@ -14,6 +20,13 @@ export default class TileAreaDisplay extends Node {
         alpha: 0.3,
       }),
     );
+
+    if (tileTexture) {
+      this.container.addChild(
+        new Sprite({ texture: tileTexture, pivot: { x: 0.5, y: 0.5 } }),
+      );
+    }
+
     this.setTilePosition(row, col);
   }
 

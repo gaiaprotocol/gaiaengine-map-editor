@@ -1,10 +1,12 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
-import { Screen } from "@gaiaengine/2d";
+import { Screen, Tilemap } from "@gaiaengine/2d";
+import { Graphics } from "pixi.js";
+import HoverTileDisplay from "../node/HoverTileDisplay.js";
 import InfiniteGrid from "../node/InfiniteGrid.js";
-import TileAreaDisplay from "../node/TileAreaDisplay.js";
 import EditorService from "./EditorService.js";
 export default class TilemapSection extends DomNode {
     projectId;
+    tilesets;
     tilemapData;
     transformStore;
     x = 0;
@@ -13,33 +15,46 @@ export default class TilemapSection extends DomNode {
     dragging = false;
     dragX = 0;
     dragY = 0;
+    touchstartX = 0;
+    touchstartY = 0;
     tileSizeInput;
     screen;
     xInput;
     yInput;
     zoomInput;
+    tilemap;
     grid;
     hoverTile;
-    constructor(projectId, tilemapData) {
+    selectedTile;
+    constructor(projectId, tilesets, tilemapData) {
         super("section.tilemap");
         this.projectId = projectId;
+        this.tilesets = tilesets;
         this.tilemapData = tilemapData;
         this.addAllowedEvents("tileSizeChange");
         this.transformStore = new Store(`tilemap-transform-${this.projectId}`);
         this.x = this.transformStore.get("x") ?? 0;
         this.y = this.transformStore.get("y") ?? 0;
         this.zoom = this.transformStore.get("zoom") ?? 1;
+        const tilemapTilesets = {};
+        for (const key in this.tilesets) {
+            tilemapTilesets[key] = `api/load-assets/${this.tilesets[key]}`;
+        }
         this.append(el("header", this.tileSizeInput = new Input({
             label: "Tile Size",
-            value: tilemapData.tileSize.toString(),
-        })), el("main", this.screen = new Screen(0, 0, this.grid = new InfiniteGrid(0, 0, tilemapData.tileSize))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
+            value: this.tilemapData.tileSize.toString(),
+        })), el("main", this.screen = new Screen(0, 0, this.tilemap = new Tilemap(0, 0, tilemapTilesets, this.tilemapData), this.grid = new InfiniteGrid(0, 0, this.tilemapData.tileSize))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
             label: "Zoom",
             value: this.zoom.toString(),
         })));
         this.screen.backgroundColor = 0xbfbfbf;
+        const centerGraphics = new Graphics();
+        centerGraphics.rect(-1, -1, 2, 2).fill(0xff0000);
+        centerGraphics.zIndex = 1000;
+        this.screen.root.container.addChild(centerGraphics);
         this.tileSizeInput.on("change", () => {
             const tileSize = parseInt(this.tileSizeInput.value);
-            tilemapData.tileSize = tileSize;
+            this.tilemapData.tileSize = tileSize;
             this.tileSizeInput.value = tileSize.toString();
             EditorService.saveTilemap(this.tilemapData);
             this.grid.tileSize = tileSize;
@@ -51,6 +66,8 @@ export default class TilemapSection extends DomNode {
             this.dragging = true;
             this.dragX = event.clientX;
             this.dragY = event.clientY;
+            this.touchstartX = event.clientX;
+            this.touchstartY = event.clientY;
         });
         this.screen.onDom("mousemove", (event) => {
             if (this.dragging) {
@@ -66,7 +83,20 @@ export default class TilemapSection extends DomNode {
             }
             this.touchMoveHandler(event);
         });
-        this.screen.onDom("mouseup", () => this.dragging = false);
+        this.screen.onDom("mouseup", (event) => {
+            this.dragging = false;
+            if (this.selectedTile &&
+                Math.abs(event.clientX - this.touchstartX) < 5 &&
+                Math.abs(event.clientY - this.touchstartY) < 5) {
+                const { row, col } = this.getRowColFromEvent(event);
+                this.tilemap.addTile({
+                    row,
+                    col,
+                    tileset: this.selectedTile,
+                });
+                EditorService.saveTilemap(this.tilemapData);
+            }
+        });
         this.screen.onDom("touchmove", this.touchMoveHandler);
         this.screen.onDom("wheel", (event) => {
             event.preventDefault();
@@ -97,7 +127,7 @@ export default class TilemapSection extends DomNode {
         this.on("visible", () => this.resizeScreen());
         this.onWindow("resize", () => this.resizeScreen());
     }
-    touchMoveHandler = (e) => {
+    getRowColFromEvent(e) {
         const screenRect = this.screen.rect;
         const rx = ((e instanceof TouchEvent ? e.touches[0].clientX : e.clientX) -
             screenRect.x - this.screen.width / 2 + this.screen.camera.x) /
@@ -107,16 +137,22 @@ export default class TilemapSection extends DomNode {
             this.screen.root.scaleY;
         const row = Math.floor((ry + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize);
         const col = Math.floor((rx + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize);
-        if (this.hoverTile && this.hoverTile.row === row &&
-            this.hoverTile.col === col)
+        return { row, col };
+    }
+    touchMoveHandler = (event) => {
+        const { row, col } = this.getRowColFromEvent(event);
+        if (!this.selectedTile || (this.hoverTile && this.hoverTile.row === row &&
+            this.hoverTile.col === col))
             return;
         this.hoverTile?.delete();
-        this.hoverTile = new TileAreaDisplay(this.tilemapData.tileSize, row, col)
-            .appendTo(this.screen.root);
+        this.hoverTile = new HoverTileDisplay(this.tilemapData.tileSize, row, col, this.tilemap.getTileTexture(this.selectedTile.key, this.selectedTile.row, this.selectedTile.col)).appendTo(this.screen.root);
     };
     resizeScreen() {
         const rect = this.screen.parent.rect;
         this.screen.resize(rect.width, rect.height);
+    }
+    setTile(tilesetKey, row, col) {
+        this.selectedTile = { key: tilesetKey, row, col };
     }
 }
 //# sourceMappingURL=TilemapSection.js.map

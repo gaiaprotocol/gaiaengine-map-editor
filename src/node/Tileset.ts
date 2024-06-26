@@ -7,13 +7,22 @@ import {
   TouchEventType,
 } from "@gaiaengine/2d";
 import FixedGrid from "./FixedGrid.js";
-import TileAreaDisplay from "./TileAreaDisplay.js";
+import HoverTileDisplay from "./HoverTileDisplay.js";
+import SelectedTileDisplay from "./SelectedTileDisplay.js";
 
 export default class Tileset extends Node {
   private grid: FixedGrid | undefined;
-  private hoverTile: TileAreaDisplay | undefined;
+  private hoverTile: HoverTileDisplay | undefined;
+  private selectedTile: SelectedTileDisplay | undefined;
 
-  constructor(src: string, private _tileSize: number) {
+  private touchstartX = 0;
+  private touchstartY = 0;
+
+  constructor(
+    src: string,
+    private _tileSize: number,
+    onTileSelect: (row: number, col: number) => void,
+  ) {
     super(0, 0);
     const image = new Image(0, 0, src, () => {
       const touchCollider: Collider = {
@@ -39,8 +48,9 @@ export default class Tileset extends Node {
           new TouchChecker(
             TouchEventType.TouchStart,
             touchCollider,
-            (rx: number, ry: number) => {
-              //TODO:
+            (rx: number, ry: number, cx: number, cy: number) => {
+              this.touchstartX = cx;
+              this.touchstartY = cy;
             },
           ),
           new TouchChecker(
@@ -54,15 +64,28 @@ export default class Tileset extends Node {
                 this.hoverTile.col === col
               ) return;
               this.hoverTile?.delete();
-              this.hoverTile = new TileAreaDisplay(this._tileSize, row, col)
+              this.hoverTile = new HoverTileDisplay(this._tileSize, row, col)
                 .appendTo(tileSystem);
             },
           ),
           new TouchChecker(
             TouchEventType.TouchEnd,
             touchCollider,
-            (rx: number, ry: number) => {
-              //TODO:
+            (rx: number, ry: number, cx: number, cy: number) => {
+              if (
+                Math.abs(cx - this.touchstartX) >= 5 ||
+                Math.abs(cy - this.touchstartY) >= 5
+              ) return;
+
+              const row = Math.floor(ry / this._tileSize + 0.5);
+              const col = Math.floor(rx / this._tileSize + 0.5);
+              this.selectedTile?.delete();
+              this.selectedTile = new SelectedTileDisplay(
+                this._tileSize,
+                row,
+                col,
+              ).appendTo(tileSystem);
+              onTileSelect(row, col);
             },
           ),
         ),

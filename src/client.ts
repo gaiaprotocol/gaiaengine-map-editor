@@ -14,8 +14,16 @@ const tilesetSection = new TilesetSection(
   tilemapData.tileSize,
   config.tilesetImages,
 );
+tilesetSection.on(
+  "tileSelected",
+  (tilesetKey, row, col) => tilemapSection.setTile(tilesetKey, row, col),
+);
 
-const tilemapSection = new TilemapSection(config.projectId, tilemapData);
+const tilemapSection = new TilemapSection(
+  config.projectId,
+  config.tilesetImages,
+  tilemapData,
+);
 tilemapSection.on(
   "tileSizeChange",
   (tileSize) => tilesetSection.tileSize = tileSize,

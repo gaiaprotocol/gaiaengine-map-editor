@@ -1,5 +1,4 @@
 import { Text } from "@gaiaengine/2d";
-import { Graphics } from "pixi.js";
 import Grid, { LINE_COLOR, LINE_WIDTH } from "./Grid.js";
 
 export default class InfiniteGrid extends Grid {
@@ -8,9 +7,6 @@ export default class InfiniteGrid extends Grid {
 
   constructor(x: number, y: number, private _tileSize: number) {
     super(x, y);
-    const centerGraphics = new Graphics();
-    centerGraphics.rect(-1, -1, 2, 2).fill(0xff0000);
-    this.container.addChild(centerGraphics);
     this.append(new Text(0, 10, "(0, 0)", { userSelect: "none" }));
   }
 
