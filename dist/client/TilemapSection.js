@@ -89,11 +89,7 @@ export default class TilemapSection extends DomNode {
                 Math.abs(event.clientX - this.touchstartX) < 5 &&
                 Math.abs(event.clientY - this.touchstartY) < 5) {
                 const { row, col } = this.getRowColFromEvent(event);
-                this.tilemap.addTile({
-                    row,
-                    col,
-                    tileset: this.selectedTile,
-                });
+                this.tilemap.addTile(row, col, this.selectedTile);
                 EditorService.saveTilemap(this.tilemapData);
             }
         });
@@ -145,14 +141,14 @@ export default class TilemapSection extends DomNode {
             this.hoverTile.col === col))
             return;
         this.hoverTile?.delete();
-        this.hoverTile = new HoverTileDisplay(this.tilemapData.tileSize, row, col, this.tilemap.getTileTexture(this.selectedTile.key, this.selectedTile.row, this.selectedTile.col)).appendTo(this.screen.root);
+        this.hoverTile = new HoverTileDisplay(this.tilemapData.tileSize, row, col, this.tilemap.getTileTexture(this.selectedTile.tilesetId, this.selectedTile.row, this.selectedTile.col)).appendTo(this.screen.root);
     };
     resizeScreen() {
         const rect = this.screen.parent.rect;
         this.screen.resize(rect.width, rect.height);
     }
-    setTile(tilesetKey, row, col) {
-        this.selectedTile = { key: tilesetKey, row, col };
+    setTile(tilesetId, row, col) {
+        this.selectedTile = { tilesetId, row, col };
     }
 }
 //# sourceMappingURL=TilemapSection.js.map

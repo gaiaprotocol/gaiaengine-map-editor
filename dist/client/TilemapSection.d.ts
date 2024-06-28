@@ -28,6 +28,6 @@ export default class TilemapSection extends DomNode {
     private getRowColFromEvent;
     private touchMoveHandler;
     private resizeScreen;
-    setTile(tilesetKey: string, row: number, col: number): void;
+    setTile(tilesetId: string, row: number, col: number): void;
 }
 //# sourceMappingURL=TilemapSection.d.ts.map

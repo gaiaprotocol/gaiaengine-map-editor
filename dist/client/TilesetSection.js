@@ -15,8 +15,8 @@ export default class TilesetSection extends DomNode {
     yInput;
     zoomInput;
     tileset;
-    getTilesetTransform(key) {
-        return this.tilesetTransforms[key] ?? { x: 0, y: 0, zoom: 1 };
+    getTilesetTransform(tilesetId) {
+        return this.tilesetTransforms[tilesetId] ?? { x: 0, y: 0, zoom: 1 };
     }
     constructor(projectId, tileSize, tilesets) {
         super("section.tileset");
@@ -24,14 +24,14 @@ export default class TilesetSection extends DomNode {
         this.tilesets = tilesets;
         this.addAllowedEvents("tileSelected");
         this.transformStore = new Store(`tileset-transform-${this.projectId}`);
-        for (const key in this.tilesets) {
-            const transform = this.transformStore.get(key);
+        for (const tilesetId in this.tilesets) {
+            const transform = this.transformStore.get(tilesetId);
             if (transform)
-                this.tilesetTransforms[key] = transform;
+                this.tilesetTransforms[tilesetId] = transform;
         }
-        this.append(this.tabs = new Tabs(`tileset-tabs-${projectId}`, Object.keys(tilesets).map((key) => ({
-            id: key,
-            label: key,
+        this.append(this.tabs = new Tabs(`tileset-tabs-${projectId}`, Object.keys(tilesets).map((tilesetId) => ({
+            id: tilesetId,
+            label: tilesetId,
         }))), el("main", this.screen = new Screen(0, 0)), el("footer", this.xInput = new Input({ label: "X" }), this.yInput = new Input({ label: "Y" }), this.zoomInput = new Input({ label: "Zoom" })));
         this.screen.backgroundColor = 0xbfbfbf;
         this.tabs.on("select", (id) => {

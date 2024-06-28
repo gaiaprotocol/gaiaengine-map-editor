@@ -16,7 +16,7 @@ const tilesetSection = new TilesetSection(
 );
 tilesetSection.on(
   "tileSelected",
-  (tilesetKey, row, col) => tilemapSection.setTile(tilesetKey, row, col),
+  (tilesetId, row, col) => tilemapSection.setTile(tilesetId, row, col),
 );
 
 const tilemapSection = new TilemapSection(

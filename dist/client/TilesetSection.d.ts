@@ -15,7 +15,7 @@ export default class TilesetSection extends DomNode {
     private tileset;
     private getTilesetTransform;
     constructor(projectId: string, tileSize: number, tilesets: {
-        [key: string]: string;
+        [tilesetId: string]: string;
     });
     private resizeScreen;
     set tileSize(tileSize: number);

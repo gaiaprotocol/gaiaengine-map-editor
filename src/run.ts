@@ -22,7 +22,10 @@ export default async function run(config: Config) {
   new EditorServer(config, async (ctx) => {
     if (ctx.uri === "api/save-tilemap") {
       const data: TilemapData = await ctx.readData();
-      await FileUtil.write("assets/tilemap.json", JSON.stringify(data));
+      await FileUtil.write(
+        "assets/tilemap.json",
+        JSON.stringify(data, null, 2),
+      );
       await ctx.apiResponse();
     }
 

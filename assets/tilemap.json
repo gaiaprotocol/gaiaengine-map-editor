@@ -1,1 +1,16 @@
-{"tileSize":16,"tiles":[{"row":0,"col":0,"tileset":{"key":"grass","row":3,"col":3}}]}
+{
+  "tileSize": 16,
+  "autotiles": {},
+  "tiles": {
+    "0,0": {
+      "tilesetId": "grass",
+      "row": 3,
+      "col": 3
+    },
+    "0,-1": {
+      "tilesetId": "grass",
+      "row": 5,
+      "col": 7
+    }
+  }
+}

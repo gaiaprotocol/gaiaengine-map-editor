@@ -10,7 +10,7 @@ interface Transform {
 
 export default class TilesetSection extends DomNode {
   private transformStore: Store;
-  private tilesetTransforms: { [key: string]: Transform } = {};
+  private tilesetTransforms: { [tilesetId: string]: Transform } = {};
 
   private dragging = false;
   private dragX = 0;
@@ -24,30 +24,30 @@ export default class TilesetSection extends DomNode {
 
   private tileset!: Tileset;
 
-  private getTilesetTransform(key: string) {
-    return this.tilesetTransforms[key] ?? { x: 0, y: 0, zoom: 1 };
+  private getTilesetTransform(tilesetId: string) {
+    return this.tilesetTransforms[tilesetId] ?? { x: 0, y: 0, zoom: 1 };
   }
 
   constructor(
     private projectId: string,
     tileSize: number,
-    private tilesets: { [key: string]: string },
+    private tilesets: { [tilesetId: string]: string },
   ) {
     super("section.tileset");
     this.addAllowedEvents("tileSelected");
 
     this.transformStore = new Store(`tileset-transform-${this.projectId}`);
-    for (const key in this.tilesets) {
-      const transform = this.transformStore.get<Transform>(key);
-      if (transform) this.tilesetTransforms[key] = transform;
+    for (const tilesetId in this.tilesets) {
+      const transform = this.transformStore.get<Transform>(tilesetId);
+      if (transform) this.tilesetTransforms[tilesetId] = transform;
     }
 
     this.append(
       this.tabs = new Tabs(
         `tileset-tabs-${projectId}`,
-        Object.keys(tilesets).map((key) => ({
-          id: key,
-          label: key,
+        Object.keys(tilesets).map((tilesetId) => ({
+          id: tilesetId,
+          label: tilesetId,
         })),
       ),
       el("main", this.screen = new Screen(0, 0)),

@@ -28,7 +28,7 @@ export default class TilemapSection extends DomNode {
   private hoverTile: HoverTileDisplay | undefined;
 
   private selectedTile:
-    | { key: string; row: number; col: number }
+    | { tilesetId: string; row: number; col: number }
     | undefined;
 
   constructor(
@@ -133,11 +133,7 @@ export default class TilemapSection extends DomNode {
         Math.abs(event.clientY - this.touchstartY) < 5
       ) {
         const { row, col } = this.getRowColFromEvent(event);
-        this.tilemap.addTile({
-          row,
-          col,
-          tileset: this.selectedTile,
-        });
+        this.tilemap.addTile(row, col, this.selectedTile);
         EditorService.saveTilemap(this.tilemapData);
       }
     });
@@ -208,7 +204,7 @@ export default class TilemapSection extends DomNode {
       row,
       col,
       this.tilemap.getTileTexture(
-        this.selectedTile.key,
+        this.selectedTile.tilesetId,
         this.selectedTile.row,
         this.selectedTile.col,
       ),
@@ -220,7 +216,7 @@ export default class TilemapSection extends DomNode {
     this.screen.resize(rect.width, rect.height);
   }
 
-  public setTile(tilesetKey: string, row: number, col: number) {
-    this.selectedTile = { key: tilesetKey, row, col };
+  public setTile(tilesetId: string, row: number, col: number) {
+    this.selectedTile = { tilesetId, row, col };
   }
 }
