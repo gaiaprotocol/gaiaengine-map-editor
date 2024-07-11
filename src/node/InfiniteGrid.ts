@@ -15,7 +15,7 @@ export default class InfiniteGrid extends Grid {
 
     this.graphics.clear();
 
-    const scale = this.screen.root.scale;
+    const scale = this.screen.camera.scale;
     if (scale < 1) return;
 
     const left = -this.screen.width / 2 / scale + this.screen.camera.x / scale;
@@ -59,13 +59,13 @@ export default class InfiniteGrid extends Grid {
 
   protected update(deltaTime: number): void {
     if (this.screen) {
-      const newScale = this.screen.root.scale;
+      const newScale = this.screen.camera.scale;
       const cameraMoved = this.screen.camera.x !== this.lastCameraX ||
         this.screen.camera.y !== this.lastCameraY;
       if (newScale !== this.currentScale || cameraMoved) {
-        this.currentScale = this.screen.root.scale;
+        this.currentScale = this.screen.camera.scale;
         this.graphics.setStrokeStyle({
-          width: LINE_WIDTH / this.screen.root.scale,
+          width: LINE_WIDTH / this.screen.camera.scale,
           color: LINE_COLOR,
         });
         this.lastCameraX = this.screen.camera.x;

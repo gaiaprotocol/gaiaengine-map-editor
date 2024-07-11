@@ -1,1 +1,1 @@
-# gaiaengine-tilemap-editor
+# gaiaengine-map-editor

@@ -100,7 +100,7 @@ export default class TilemapSection extends DomNode {
     });
 
     this.screen.camera.setPosition(-this.x, -this.y);
-    this.screen.root.scale = this.zoom;
+    this.screen.camera.scale = this.zoom;
 
     this.screen.onDom("mousedown", (event: MouseEvent) => {
       this.dragging = true;
@@ -145,7 +145,7 @@ export default class TilemapSection extends DomNode {
       this.zoom += event.deltaY / 100;
       if (this.zoom < 0.1) this.zoom = 0.1;
       if (this.zoom > 10) this.zoom = 10;
-      this.screen.root.scale = this.zoom;
+      this.screen.camera.scale = this.zoom;
       this.zoomInput.value = this.zoom.toString();
       this.transformStore.set("zoom", this.zoom);
     });
@@ -164,7 +164,7 @@ export default class TilemapSection extends DomNode {
 
     this.zoomInput.on("change", () => {
       this.zoom = parseFloat(this.zoomInput.value);
-      this.screen.root.scale = this.zoom;
+      this.screen.camera.scale = this.zoom;
       this.transformStore.set("zoom", this.zoom);
     });
 
@@ -176,10 +176,10 @@ export default class TilemapSection extends DomNode {
     const screenRect = this.screen.rect;
     const rx = ((e instanceof TouchEvent ? e.touches[0].clientX : e.clientX) -
       screenRect.x - this.screen.width / 2 + this.screen.camera.x) /
-      this.screen.root.scaleX;
+      this.screen.camera.scale;
     const ry = ((e instanceof TouchEvent ? e.touches[0].clientY : e.clientY) -
       screenRect.y - this.screen.height / 2 + this.screen.camera.y) /
-      this.screen.root.scaleY;
+      this.screen.camera.scale;
     const row = Math.floor(
       (ry + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize,
     );

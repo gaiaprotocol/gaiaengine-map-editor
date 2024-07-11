@@ -73,7 +73,7 @@ export default class TilesetSection extends DomNode {
       this.yInput.value = transform.y.toString();
       this.zoomInput.value = transform.zoom.toString();
       this.screen.camera.setPosition(-transform.x, -transform.y);
-      this.screen.root.scale = transform.zoom;
+      this.screen.camera.scale = transform.zoom;
     }).init();
 
     this.screen.onDom("mousedown", (event: MouseEvent) => {
@@ -104,7 +104,7 @@ export default class TilesetSection extends DomNode {
       transform.zoom += event.deltaY / 100;
       if (transform.zoom < 0.1) transform.zoom = 0.1;
       if (transform.zoom > 10) transform.zoom = 10;
-      this.screen.root.scale = transform.zoom;
+      this.screen.camera.scale = transform.zoom;
       this.zoomInput.value = transform.zoom.toString();
       this.transformStore.set(this.tabs.currentTab!, transform);
     });
@@ -126,7 +126,7 @@ export default class TilesetSection extends DomNode {
     this.zoomInput.on("change", () => {
       const transform = this.getTilesetTransform(this.tabs.currentTab!);
       transform.zoom = parseFloat(this.zoomInput.value);
-      this.screen.root.scale = transform.zoom;
+      this.screen.camera.scale = transform.zoom;
       this.transformStore.set(this.tabs.currentTab!, transform);
     });
 
