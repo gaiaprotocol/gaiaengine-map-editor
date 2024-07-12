@@ -1,6 +1,6 @@
 import { DomNode, el, Input, Store, Tabs } from "@common-module/app";
 import { Screen } from "@gaiaengine/2d";
-import Tileset from "../node/Tileset.js";
+import Tileset from "./node/Tileset.js";
 export default class TilesetSection extends DomNode {
     projectId;
     tilesets;
@@ -42,7 +42,7 @@ export default class TilesetSection extends DomNode {
             this.yInput.value = transform.y.toString();
             this.zoomInput.value = transform.zoom.toString();
             this.screen.camera.setPosition(-transform.x, -transform.y);
-            this.screen.root.scale = transform.zoom;
+            this.screen.camera.scale = transform.zoom;
         }).init();
         this.screen.onDom("mousedown", (event) => {
             this.dragging = true;
@@ -71,7 +71,7 @@ export default class TilesetSection extends DomNode {
                 transform.zoom = 0.1;
             if (transform.zoom > 10)
                 transform.zoom = 10;
-            this.screen.root.scale = transform.zoom;
+            this.screen.camera.scale = transform.zoom;
             this.zoomInput.value = transform.zoom.toString();
             this.transformStore.set(this.tabs.currentTab, transform);
         });
@@ -90,7 +90,7 @@ export default class TilesetSection extends DomNode {
         this.zoomInput.on("change", () => {
             const transform = this.getTilesetTransform(this.tabs.currentTab);
             transform.zoom = parseFloat(this.zoomInput.value);
-            this.screen.root.scale = transform.zoom;
+            this.screen.camera.scale = transform.zoom;
             this.transformStore.set(this.tabs.currentTab, transform);
         });
         this.on("visible", () => this.resizeScreen());

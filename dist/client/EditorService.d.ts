@@ -1,6 +1,6 @@
-import { TilemapData } from "@gaiaengine/2d";
+import MapData from "./MapData.js";
 declare class EditorService {
-    saveTilemap(tilemap: TilemapData): Promise<void>;
+    saveTilemap(tilemap: MapData): Promise<void>;
 }
 declare const _default: EditorService;
 export default _default;

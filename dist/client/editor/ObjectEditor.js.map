@@ -1,0 +1,1 @@
+{"version":3,"file":"ObjectEditor.js","sourceRoot":"","sources":["../../../src/client/editor/ObjectEditor.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,oBAAoB,CAAC;AAE7C,MAAM,CAAC,OAAO,OAAO,YAAa,SAAQ,OAAO;IAC/C;QACE,KAAK,CAAC,gBAAgB,CAAC,CAAC;IAC1B,CAAC;CACF"}

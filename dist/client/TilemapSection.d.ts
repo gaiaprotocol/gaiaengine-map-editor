@@ -1,5 +1,5 @@
 import { DomNode } from "@common-module/app";
-import { TilemapData } from "@gaiaengine/2d";
+import MapData from "./MapData.js";
 export default class TilemapSection extends DomNode {
     private projectId;
     private tilesets;
@@ -18,13 +18,13 @@ export default class TilemapSection extends DomNode {
     private xInput;
     private yInput;
     private zoomInput;
-    private tilemap;
+    private map;
     private grid;
     private hoverTile;
     private selectedTile;
     constructor(projectId: string, tilesets: {
         [key: string]: string;
-    }, tilemapData: TilemapData);
+    }, tilemapData: MapData);
     private getRowColFromEvent;
     private touchMoveHandler;
     private resizeScreen;

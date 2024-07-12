@@ -1,6 +1,6 @@
 import { FileServer, FileUtil, HttpContext } from "@common-module/server";
-import { TilemapData } from "@gaiaengine/2d";
 import Config from "./Config.js";
+import MapData from "./client/MapData.js";
 
 class EditorServer extends FileServer {
   constructor(
@@ -21,9 +21,9 @@ class EditorServer extends FileServer {
 export default async function run(config: Config) {
   new EditorServer(config, async (ctx) => {
     if (ctx.uri === "api/save-tilemap") {
-      const data: TilemapData = await ctx.readData();
+      const data: MapData = await ctx.readData();
       await FileUtil.write(
-        "assets/tilemap.json",
+        config.mapJsonPath,
         JSON.stringify(data, null, 2),
       );
       await ctx.apiResponse();

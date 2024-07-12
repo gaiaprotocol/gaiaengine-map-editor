@@ -517,6 +517,9 @@ button.component.disabled {
   max-width: 36px;
   max-height: 36px;
 }
+.app-nav-bar.component:not(:has(h1)) > ul {
+  padding-top: 21px;
+}
 .app-nav-bar.component > ul {
   flex-grow: 1;
   display: flex;
@@ -1369,76 +1372,21 @@ button.component.disabled {
   max-width: 100%;
   border-radius: 8px;
 }
-#layout {
-  display: flex;
+body {
+  width: 100%;
   height: 100%;
-}
-#layout > section.tileset {
-  width: 340px;
-  border-right: 1px solid var(--line-color);
-}
-#layout > section.tilemap {
-  flex-grow: 1;
-}
-section.tileset {
   display: flex;
-  flex-direction: column;
 }
-section.tileset > .tabs {
-  flex-shrink: 0;
+body > section.editor {
+  margin-left: 71px;
 }
-section.tileset > main {
-  flex-grow: 1;
-  overflow: hidden;
+.terrain-editor.hidden {
+  display: none;
 }
-section.tileset > footer {
-  flex-shrink: 0;
-  height: 49px;
-  border-top: 1px solid var(--line-color);
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  padding: 0 10px;
+.object-editor.hidden {
+  display: none;
 }
-section.tileset > footer > .input {
-  flex-direction: row;
-  align-items: center;
-}
-section.tileset > footer > .input > input {
-  width: 60px;
-}
-section.tilemap {
-  display: flex;
-  flex-direction: column;
-}
-section.tilemap > header {
-  flex-shrink: 0;
-  height: 49px;
-  border-bottom: 1px solid var(--line-color);
-}
-section.tilemap > header,
-section.tilemap > footer {
-  display: flex;
-  gap: 10px;
-  padding: 0 10px;
-}
-section.tilemap > header > .input,
-section.tilemap > footer > .input {
-  flex-direction: row;
-  align-items: center;
-}
-section.tilemap > header > .input > input,
-section.tilemap > footer > .input > input {
-  width: 60px;
-}
-section.tilemap > main {
-  flex-grow: 1;
-  overflow: hidden;
-}
-section.tilemap > footer {
-  flex-shrink: 0;
-  height: 49px;
-  border-top: 1px solid var(--line-color);
-  justify-content: flex-end;
+.map-editor.hidden {
+  display: none;
 }
 

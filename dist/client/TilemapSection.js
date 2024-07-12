@@ -1,9 +1,8 @@
 import { DomNode, el, Input, Store } from "@common-module/app";
-import { Screen, Tilemap } from "@gaiaengine/2d";
+import { RectTerrainMap, Screen } from "@gaiaengine/2d";
 import { Graphics } from "pixi.js";
-import HoverTileDisplay from "../node/HoverTileDisplay.js";
-import InfiniteGrid from "../node/InfiniteGrid.js";
 import EditorService from "./EditorService.js";
+import InfiniteGrid from "./node/InfiniteGrid.js";
 export default class TilemapSection extends DomNode {
     projectId;
     tilesets;
@@ -22,7 +21,7 @@ export default class TilemapSection extends DomNode {
     xInput;
     yInput;
     zoomInput;
-    tilemap;
+    map;
     grid;
     hoverTile;
     selectedTile;
@@ -43,7 +42,7 @@ export default class TilemapSection extends DomNode {
         this.append(el("header", this.tileSizeInput = new Input({
             label: "Tile Size",
             value: this.tilemapData.tileSize.toString(),
-        })), el("main", this.screen = new Screen(0, 0, this.tilemap = new Tilemap(0, 0, tilemapTilesets, this.tilemapData), this.grid = new InfiniteGrid(0, 0, this.tilemapData.tileSize))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
+        })), el("main", this.screen = new Screen(0, 0, this.map = new RectTerrainMap(this.tilemapData.tileSize, this.tilemapData.spritesheets, this.tilemapData.terrains, this.tilemapData.terrainMap, this.tilemapData.objects), this.grid = new InfiniteGrid(0, 0, this.tilemapData.tileSize))), el("footer", this.xInput = new Input({ label: "X", value: this.x.toString() }), this.yInput = new Input({ label: "Y", value: this.y.toString() }), this.zoomInput = new Input({
             label: "Zoom",
             value: this.zoom.toString(),
         })));
@@ -61,7 +60,7 @@ export default class TilemapSection extends DomNode {
             this.emit("tileSizeChange", tileSize);
         });
         this.screen.camera.setPosition(-this.x, -this.y);
-        this.screen.root.scale = this.zoom;
+        this.screen.camera.scale = this.zoom;
         this.screen.onDom("mousedown", (event) => {
             this.dragging = true;
             this.dragX = event.clientX;
@@ -89,7 +88,6 @@ export default class TilemapSection extends DomNode {
                 Math.abs(event.clientX - this.touchstartX) < 5 &&
                 Math.abs(event.clientY - this.touchstartY) < 5) {
                 const { row, col } = this.getRowColFromEvent(event);
-                this.tilemap.addTile(row, col, this.selectedTile);
                 EditorService.saveTilemap(this.tilemapData);
             }
         });
@@ -101,7 +99,7 @@ export default class TilemapSection extends DomNode {
                 this.zoom = 0.1;
             if (this.zoom > 10)
                 this.zoom = 10;
-            this.screen.root.scale = this.zoom;
+            this.screen.camera.scale = this.zoom;
             this.zoomInput.value = this.zoom.toString();
             this.transformStore.set("zoom", this.zoom);
         });
@@ -117,7 +115,7 @@ export default class TilemapSection extends DomNode {
         });
         this.zoomInput.on("change", () => {
             this.zoom = parseFloat(this.zoomInput.value);
-            this.screen.root.scale = this.zoom;
+            this.screen.camera.scale = this.zoom;
             this.transformStore.set("zoom", this.zoom);
         });
         this.on("visible", () => this.resizeScreen());
@@ -127,10 +125,10 @@ export default class TilemapSection extends DomNode {
         const screenRect = this.screen.rect;
         const rx = ((e instanceof TouchEvent ? e.touches[0].clientX : e.clientX) -
             screenRect.x - this.screen.width / 2 + this.screen.camera.x) /
-            this.screen.root.scaleX;
+            this.screen.camera.scale;
         const ry = ((e instanceof TouchEvent ? e.touches[0].clientY : e.clientY) -
             screenRect.y - this.screen.height / 2 + this.screen.camera.y) /
-            this.screen.root.scaleY;
+            this.screen.camera.scale;
         const row = Math.floor((ry + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize);
         const col = Math.floor((rx + this.tilemapData.tileSize / 2) / this.tilemapData.tileSize);
         return { row, col };
@@ -141,7 +139,6 @@ export default class TilemapSection extends DomNode {
             this.hoverTile.col === col))
             return;
         this.hoverTile?.delete();
-        this.hoverTile = new HoverTileDisplay(this.tilemapData.tileSize, row, col, this.tilemap.getTileTexture(this.selectedTile.tilesetId, this.selectedTile.row, this.selectedTile.col)).appendTo(this.screen.root);
     };
     resizeScreen() {
         const rect = this.screen.parent.rect;

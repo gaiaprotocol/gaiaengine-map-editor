@@ -65,10 +65,10 @@ export default class FixedGrid extends Grid {
         this.drawLines();
     }
     update(deltaTime) {
-        if (this.screen && this.currentScale !== this.screen.root.scale) {
-            this.currentScale = this.screen.root.scale;
+        if (this.screen && this.currentScale !== this.screen.camera.scale) {
+            this.currentScale = this.screen.camera.scale;
             this.graphics.setStrokeStyle({
-                width: LINE_WIDTH / this.screen.root.scale,
+                width: LINE_WIDTH / this.screen.camera.scale,
                 color: LINE_COLOR,
             });
             this.drawLines();

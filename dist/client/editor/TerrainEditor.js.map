@@ -1,0 +1,1 @@
+{"version":3,"file":"TerrainEditor.js","sourceRoot":"","sources":["../../../src/client/editor/TerrainEditor.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,oBAAoB,CAAC;AAE7C,MAAM,CAAC,OAAO,OAAO,aAAc,SAAQ,OAAO;IAChD;QACE,KAAK,CAAC,iBAAiB,CAAC,CAAC;IAC3B,CAAC;CACF"}
