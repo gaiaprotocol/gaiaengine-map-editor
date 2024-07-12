@@ -10,7 +10,7 @@ const spritesheets: {
 for (const id in config.spritesheets) {
   const { src, atlas } = config.spritesheets[id];
   spritesheets[id] = {
-    src,
+    src: `/api/load-assets/${src}`,
     atlas: await fetch(`/api/load-assets/${atlas}`).then((response) =>
       response.json()
     ),

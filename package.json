@@ -5,7 +5,8 @@
   "type": "module",
   "dependencies": {
     "@common-module/server": "^0.0.1",
-    "@gaiaengine/2d": "^0.0.5"
+    "@gaiaengine/2d": "^0.0.5",
+    "@gaiaengine/dom": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.5",

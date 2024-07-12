@@ -38,9 +38,9 @@ export default class App {
       ),
       el(
         "section.editor",
-        this.terrainEditor = new TerrainEditor(),
-        this.objectEditor = new ObjectEditor(),
-        this.mapEditor = new MapEditor(),
+        this.terrainEditor = new TerrainEditor(spritesheets, mapData.terrains),
+        this.objectEditor = new ObjectEditor(spritesheets, mapData.objects),
+        this.mapEditor = new MapEditor(spritesheets, mapData),
       ),
     );
 
