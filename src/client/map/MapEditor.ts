@@ -45,7 +45,7 @@ export default class MapEditor extends DomNode {
 
     this.append(el(
       ".terrain-and-object-list",
-      new FileTree([{
+      new FileTree("map-editor-file-tree", [{
         icon: new MaterialIcon("terrain"),
         name: "Terrains",
         children: terrainFileTreeData,

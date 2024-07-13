@@ -5,23 +5,24 @@ import { SpritesheetData } from "pixi.js";
 export default class FileTreeIcon extends DomNode {
   constructor(
     private src: string,
-    private atlas?: SpritesheetData,
-    private frame?: string,
+    private atlas: SpritesheetData,
+    private frame: string,
+    private size: number = 32,
   ) {
     super(".file-tree-icon");
   }
 
   public clone() {
     const clone = super.clone();
-    clone.domElement.append(
-      new Sprite(
-        0,
-        0,
-        this.src,
-        this.atlas,
-        this.frame,
-      ).container,
+    const sprite = new Sprite(
+      0,
+      0,
+      this.src,
+      this.atlas,
+      this.frame,
     );
+    sprite.setSize(this.size, this.size);
+    clone.domElement.append(sprite.container);
     return clone;
   }
 }

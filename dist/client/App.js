@@ -1,7 +1,9 @@
-import { AppNavBar, BodyNode, el, MaterialIcon, } from "@common-module/app";
+import { AppNavBar, BodyNode, el, MaterialIcon } from "@common-module/app";
+import MapEditor from "./map/MapEditor.js";
+import ObjectEditor from "./object/ObjectEditor.js";
+import TerrainEditor from "./terrain/TerrainEditor.js";
 export default class App {
     navBar;
-    editorSection;
     terrainEditor;
     objectEditor;
     mapEditor;
@@ -21,10 +23,16 @@ export default class App {
                     icon: new MaterialIcon("map"),
                     title: "Map",
                 }],
-        })), this.editorSection = el("section.editor", {
-            "data-empty-message": "Select menu to start editing",
-        }));
+        })), el("section.editor", this.terrainEditor = new TerrainEditor(spritesheets, mapData.terrains), this.objectEditor = new ObjectEditor(spritesheets, mapData.objects), this.mapEditor = new MapEditor(spritesheets, mapData)));
         this.navBar.on("select", (id) => {
+            [this.terrainEditor, this.objectEditor, this.mapEditor]
+                .forEach((e) => e.hide());
+            if (id === "terrain")
+                this.terrainEditor.show();
+            else if (id === "objects")
+                this.objectEditor.show();
+            else if (id === "map")
+                this.mapEditor.show();
         }).init();
     }
 }

@@ -28,7 +28,9 @@ export default class ObjectEditor extends DomNode {
       });
     }
 
-    this.append(el(".object-list", new FileTree(fileTreeData)));
+    this.append(
+      el(".object-list", new FileTree("object-editor-file-tree", fileTreeData)),
+    );
   }
 
   public show() {

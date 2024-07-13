@@ -1336,6 +1336,29 @@ button.component.disabled {
   max-width: 400px;
   border-radius: 16px;
 }
+.file-tree-node > main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+}
+@media (pointer: fine) {
+  .file-tree-node > main:hover:not(.disabled) {
+    background-color: var(--button-hover-color);
+  }
+}
+.file-tree-node > main:active:not(.disabled) {
+  background-color: var(--button-hover-color);
+}
+.file-tree-node > main > button {
+  width: 32px;
+  height: 32px;
+}
+.file-tree-node > .file-tree {
+  margin-left: 36px;
+}
 .x-account-email-required-popup > header {
   padding: 0 12px !important;
 }
@@ -1388,5 +1411,8 @@ body > section.editor {
 }
 .map-editor.hidden {
   display: none;
+}
+.map-editor > .terrain-and-object-list {
+  width: 320px;
 }
 

@@ -30,7 +30,12 @@ export default class TerrainEditor extends DomNode {
       });
     }
 
-    this.append(el(".terrain-list", new FileTree(fileTreeData)));
+    this.append(
+      el(
+        ".terrain-list",
+        new FileTree("terrain-editor-file-tree", fileTreeData),
+      ),
+    );
   }
 
   public show() {
