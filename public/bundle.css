@@ -1336,6 +1336,9 @@ button.component.disabled {
   max-width: 400px;
   border-radius: 16px;
 }
+.file-tree.hidden {
+  display: none;
+}
 .file-tree-node > main {
   display: flex;
   align-items: center;
